@@ -3,13 +3,13 @@ from typing import Optional, Tuple
 
 import torch
 from torch import Tensor
-from torch.nn import Linear
+# import torch.nn.functional as F
+import libs.functional as F
+from torch.nn import Module, Linear
 from torch.nn.init import xavier_uniform_
 from torch.nn.init import constant_
 from torch.nn.init import xavier_normal_
 from torch.nn.parameter import Parameter
-from torch.nn import Module
-from .. import functional as F
 
 
 class Threshold(Module):
@@ -871,7 +871,7 @@ class MultiheadAttention(Module):
     bias_k: Optional[torch.Tensor]
     bias_v: Optional[torch.Tensor]
 
-    def __init__(self, embed_dim, num_heads, dropout=0., bias=True, add_bias_kv=False, add_zero_attn=False, batch_first=False, kdim=None, vdim=None):
+    def __init__(self, embed_dim, num_heads, dropout=0., bias=True, add_bias_kv=False, add_zero_attn=False, kdim=None, vdim=None, batch_first=False):
         super(MultiheadAttention, self).__init__()
         self.embed_dim = embed_dim
         self.kdim = kdim if kdim is not None else embed_dim
