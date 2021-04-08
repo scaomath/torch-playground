@@ -6361,7 +6361,7 @@ class TestNN(NNTestCase):
             torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-5)
 
     def test_transformerdecoder(self):
-        def get_a_test_layer(use_cuda, activation, batch_first):
+        def get_a_test_layer(use_cuda, activation):
             d_model = 4
             nhead = 2
             dim_feedforward = 16
@@ -6373,8 +6373,7 @@ class TestNN(NNTestCase):
                 nhead,
                 dim_feedforward=dim_feedforward,
                 dropout=dropout,
-                activation=activation,
-                batch_first=batch_first).to(device)
+                activation=activation).to(device)
 
             with torch.no_grad():
                 # set constant weights of the model
@@ -6395,7 +6394,7 @@ class TestNN(NNTestCase):
             def perm_fn(x):
                 return x.transpose(1,0) if batch_first else x
 
-            decoder_layer = get_a_test_layer(use_cuda=use_cuda, activation=activation, batch_first=batch_first)
+            decoder_layer = get_a_test_layer(use_cuda=use_cuda, activation=activation)
 
             model = nn.TransformerDecoder(decoder_layer, 1, batch_first=batch_first).to(device)
 
