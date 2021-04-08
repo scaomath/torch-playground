@@ -7,6 +7,7 @@ nhead = 2
 dim_feedforward = 16
 dropout = 0.0
 bsz = 2
+layer_norm_eps = 1e-5
 seq_length = 5
 tgt_length = 3
 
@@ -14,7 +15,9 @@ for batch_first in (True, False):
     def perm_fn(x):
         return x.transpose(1,0) if batch_first else x
 
-    model = TransformerDecoderLayer(d_model, nhead, dim_feedforward, dropout, layer_norm_eps=0., batch_first=batch_first,)
+    model = TransformerDecoderLayer(d_model, nhead, dim_feedforward, dropout, 
+                                    # layer_norm_eps=layer_norm_eps, 
+                                    batch_first=batch_first,)
 
     # set constant weights of the model
     for idx, p in enumerate(model.parameters()):
@@ -32,6 +35,7 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # deterministic input
@@ -44,6 +48,7 @@ for batch_first in (True, False):
                                         [[2.422245, 0.051716, -0.606338, -0.024756]]]))
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # deterministic input
@@ -57,6 +62,7 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # deterministic input
@@ -86,6 +92,7 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # key_padding_mask
@@ -116,6 +123,7 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # memory_key_padding_mask
@@ -130,6 +138,7 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
 
     # memory_key_padding_mask
@@ -146,4 +155,6 @@ for batch_first in (True, False):
     result = result.detach().numpy()
     ref_output = ref_output.detach().numpy()
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
+    print(np.max(np.abs(result - ref_output)))
     np.testing.assert_allclose(result, ref_output, atol=1e-5)
+# %%

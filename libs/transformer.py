@@ -162,8 +162,7 @@ class TransformerEncoder(Module):
         >>> src = torch.rand(10, 32, 512)
         >>> out = transformer_encoder(src)
     """
-    __constants__ = ['norm']
-    __constants__ = ['batch_first']
+    __constants__ = ['norm', 'batch_first']
 
     def __init__(self, encoder_layer, num_layers, norm=None, batch_first=False):
         super(TransformerEncoder, self).__init__()
@@ -218,8 +217,7 @@ class TransformerDecoder(Module):
         >>> tgt = torch.rand(20, 32, 512)
         >>> out = transformer_decoder(tgt, memory)
     """
-    __constants__ = ['norm']
-    __constants__ = ['batch_first']
+    __constants__ = ['norm', 'batch_first']
 
     def __init__(self, decoder_layer, num_layers, norm=None, batch_first=False):
         super(TransformerDecoder, self).__init__()
@@ -245,8 +243,8 @@ class TransformerDecoder(Module):
             see the docs in Transformer class.
         """
         if self.batch_first:
-            output = tgt.transpose(1, 0)
-            memory = memory.transpose(1, 0)
+            output = tgt.transpose(0, 1)
+            memory = memory.transpose(0, 1)
         else:
             output = tgt
 
@@ -260,7 +258,7 @@ class TransformerDecoder(Module):
             output = self.norm(output)
 
         if self.batch_first:
-            return output.transpose(1, 0)
+            return output.transpose(0, 1)
         else:
             return output
 

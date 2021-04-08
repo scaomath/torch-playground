@@ -4,6 +4,7 @@ from torch import nn
 from libs.activation import *
 from libs.transformer import *
 import libs.functional as F
+torch.set_printoptions(7)
 
 _MAX_LENGTH = 80
 
