@@ -58,7 +58,7 @@ for batch_first in (False, True):
     # ref_output = torch.Tensor(
     #     [[[2.314351, 0.094805, -0.671322, 0.101977]]]).to(device)
     # assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    # torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    # torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # deterministic input
     decoder_input = perm_fn(torch.Tensor([[[9, 10, 11, 12]],
@@ -71,7 +71,7 @@ for batch_first in (False, True):
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
     print(result, '\n\n', ref_output)
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # deterministic input
     decoder_input = perm_fn(torch.Tensor([[[1, 2, 3, 4]],
@@ -84,7 +84,7 @@ for batch_first in (False, True):
         [[2.343536, 0.085561, -0.654954, 0.074991]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # deterministic input
     decoder_input = perm_fn(torch.Tensor([[[0.4517, 0.6793, 0.5313, 0.0034],
@@ -114,7 +114,7 @@ for batch_first in (False, True):
                                         [2.432306, 0.028858, -0.599542, -0.072846]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-5)
 
     # key_padding_mask
     key_padding_mask = torch.zeros(2, 3).to(device) == 1
@@ -129,7 +129,7 @@ for batch_first in (False, True):
                                         [2.432306, 0.028858, -0.599542, -0.072846]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-5)
 
     # key_padding_mask
     key_padding_mask[0, 2] = 1
@@ -146,7 +146,7 @@ for batch_first in (False, True):
                                         [2.432659, 0.029244, -0.599294, -0.072382]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # memory_key_padding_mask
     key_padding_mask = torch.zeros(2, 5).to(device) == 1
@@ -161,7 +161,7 @@ for batch_first in (False, True):
                                         [2.432306, 0.028858, -0.599542, -0.072846]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # memory_key_padding_mask
     key_padding_mask[0, 4] = 1
@@ -178,7 +178,7 @@ for batch_first in (False, True):
                                         [2.433075, 0.028543, -0.598987, -0.073985]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-4)
 
     # multiple layers no norm
     model = TransformerDecoder(decoder_layer, 2, batch_first=batch_first).to(device)
@@ -190,7 +190,7 @@ for batch_first in (False, True):
     ref_output = torch.Tensor(
         [[[2.31316, 0.0950293, -0.671995, 0.102802]]]).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-3)
 
     # multiple layers no norm
     model = TransformerDecoder(decoder_layer, 6, batch_first=batch_first).to(device)
@@ -223,7 +223,7 @@ for batch_first in (False, True):
                                         [2.43113, 0.0279516, -0.600376, -0.0736896]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-5)
 
     # multiple layers with norm
     # d_model = 4
@@ -237,7 +237,7 @@ for batch_first in (False, True):
     ref_output = torch.Tensor(
         [[[1.66166, -0.326986, -1.01466, -0.320017]]]).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-3)
 
     # multiple layers with norm
     model = TransformerDecoder(decoder_layer, 6, norm=norm, batch_first=batch_first).to(device)
@@ -271,7 +271,7 @@ for batch_first in (False, True):
         [1.69571, -0.357363, -0.894154, -0.444196]]]
     )).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output, rtol=1e-5, atol=1e-5)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-5)
 
     # gelu activation test cases
     activation = "gelu"
@@ -289,7 +289,7 @@ for batch_first in (False, True):
     ref_output = torch.Tensor([[[2.306435, 0.095946, -0.675796, 0.10687]]]
                             ).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-3)
 
     # deterministic input
     decoder_input = perm_fn(torch.Tensor([[[9, 10, 11, 12]],
@@ -300,7 +300,7 @@ for batch_first in (False, True):
         [[[2.415448, 0.054389, -0.610932, -0.0156613]],
         [[2.415448, 0.054389, -0.610932, -0.0156613]]])).to(device)
     assertEqual(tuple(result.shape), tuple(ref_output.shape))
-    torch.testing.assert_allclose(result, ref_output)
+    torch.testing.assert_allclose(result, ref_output, rtol=1e-7, atol=1e-3)
 
     # deterministic input
     decoder_input = perm_fn(torch.Tensor([[[1, 2, 3, 4]],
