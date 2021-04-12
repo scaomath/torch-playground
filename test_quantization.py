@@ -1,3 +1,4 @@
+#%%
 import torch
 from torch import nn
 import torch.nn.functional as nnF
@@ -6,9 +7,11 @@ from libs.activation import MultiheadAttention
 from torch import Tensor
 from typing import Optional, Tuple
 
+import libs.quantizable as nnqa
 import warnings
-
-class MultiheadAttention(nn.MultiheadAttention):
+# attn_output, attn_output_weights = multihead_attn(query, key, value)
+# %%
+class MultiheadAttention(MultiheadAttention):
     # _FLOAT_MODULE = nn.MultiheadAttention
     _FLOAT_MODULE = MultiheadAttention
 
@@ -311,9 +314,6 @@ class MultiheadAttention(nn.MultiheadAttention):
         static_k = None
         static_v = None
 
-        if self.batch_first:
-            query, key, value = [x.transpose(1, 0) for x in (query, key, value)]
-
         tgt_len, bsz, embed_dim_to_check = query.size()
         assert self.embed_dim == embed_dim_to_check
         # allow MHA to have different sizes for the feature dimension
@@ -439,12 +439,14 @@ class MultiheadAttention(nn.MultiheadAttention):
         attn_output = self.out_proj(attn_output)  # type: ignore
         attn_output_weights = self.quant_attn_output_weights(attn_output_weights)
 
-        if self.batch_first:
-            attn_output = attn_output.transpose(1, 0)
-
         if need_weights:
             # average attention weights over heads
             attn_output_weights = attn_output_weights.view(bsz, self.num_heads, tgt_len, src_len)
             return attn_output, attn_output_weights.mean(dim=1)
         else:
             return attn_output, None
+
+
+#%%
+multihead_attn = MultiheadAttention(20, 2)
+# %%

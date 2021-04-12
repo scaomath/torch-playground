@@ -1000,7 +1000,7 @@ class MultiheadAttention(Module):
                 key_padding_mask=key_padding_mask, need_weights=need_weights,
                 attn_mask=attn_mask)
         if self.batch_first:
-            return attn_output.transpose(1, 0).contiguous(), attn_output_weights
+            return attn_output.transpose(1, 0), attn_output_weights
         else:
             return attn_output, attn_output_weights
 
